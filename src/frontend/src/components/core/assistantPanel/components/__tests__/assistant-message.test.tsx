@@ -238,8 +238,8 @@ describe("AssistantMessageItem", () => {
 
       render(<AssistantMessageItem message={message} />);
 
-      expect(screen.getByText("Langflow Assistant")).toBeInTheDocument();
-      expect(screen.getByAltText("Langflow Assistant")).toBeInTheDocument();
+      expect(screen.getByText("DataFlow Assistant")).toBeInTheDocument();
+      expect(screen.getByAltText("DataFlow Assistant")).toBeInTheDocument();
     });
   });
 

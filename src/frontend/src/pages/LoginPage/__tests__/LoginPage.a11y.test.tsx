@@ -107,7 +107,7 @@ describe("LoginPage accessibility", () => {
     const loginOptions = screen.getByTestId("custom-login-sso-options");
     const signUpLink = screen.getByRole("link", { name: /sign up/i });
 
-    expect(screen.getByText("Langflow")).toBeInTheDocument();
+    expect(screen.getByText("DataFlow")).toBeInTheDocument();
     expect(screen.getByText(/don't have an account\?/i)).toBeInTheDocument();
     expect(
       signInButton.compareDocumentPosition(loginOptions) &
@@ -142,7 +142,7 @@ describe("LoginPage accessibility", () => {
     renderLoginPage();
 
     expect(
-      screen.getByRole("region", { name: /sign in to langflow/i }),
+      screen.getByRole("region", { name: /sign in to dataflow/i }),
     ).toBeInTheDocument();
   });
 

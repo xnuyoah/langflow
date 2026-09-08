@@ -1,6 +1,8 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
+import { DEFAULT_LANGUAGE } from "./constants/languages";
 import en from "./locales/en.json";
+import zhHans from "./locales/zh-Hans.json";
 
 const SUPPORTED_LANGUAGES = [
   "en",
@@ -12,8 +14,8 @@ const SUPPORTED_LANGUAGES = [
   "zh-Hans",
 ] as const;
 
-const normalizeLanguage = (lang?: string | null): string => {
-  if (!lang) return "en";
+export const normalizeLanguage = (lang?: string | null): string => {
+  if (!lang) return DEFAULT_LANGUAGE;
 
   if (
     SUPPORTED_LANGUAGES.includes(lang as (typeof SUPPORTED_LANGUAGES)[number])
@@ -27,7 +29,7 @@ const normalizeLanguage = (lang?: string | null): string => {
     return "zh-Hans";
   }
 
-  const baseLang = lang.split("-")[0];
+  const baseLang = lang.split("-")[0].toLowerCase();
 
   if (
     SUPPORTED_LANGUAGES.includes(
@@ -37,11 +39,11 @@ const normalizeLanguage = (lang?: string | null): string => {
     return baseLang;
   }
 
-  return "en";
+  return DEFAULT_LANGUAGE;
 };
 
 export const detectedLang = normalizeLanguage(
-  localStorage.getItem("languagePreference") || "en",
+  localStorage.getItem("languagePreference"),
 );
 
 const i18n = i18next.createInstance();
@@ -53,6 +55,7 @@ console.info = () => {};
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
+    [DEFAULT_LANGUAGE]: { translation: zhHans },
   },
   lng: detectedLang,
   fallbackLng: "en",
@@ -77,11 +80,11 @@ syncDocumentLanguage(detectedLang);
 i18n.on("languageChanged", syncDocumentLanguage);
 
 export async function loadLanguage(lang: string): Promise<void> {
-  if (lang === "en") return;
-  if (i18n.hasResourceBundle(lang, "translation")) return;
+  const normalizedLang = normalizeLanguage(lang);
+  if (i18n.hasResourceBundle(normalizedLang, "translation")) return;
   try {
-    const messages = await import(`./locales/${lang}.json`);
-    i18n.addResourceBundle(lang, "translation", messages.default);
+    const messages = await import(`./locales/${normalizedLang}.json`);
+    i18n.addResourceBundle(normalizedLang, "translation", messages.default);
   } catch {
     // Unknown locale — no bundle file exists. i18next's fallbackLng: "en" takes over.
   }

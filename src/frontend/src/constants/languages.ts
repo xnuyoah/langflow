@@ -1,3 +1,5 @@
+export const DEFAULT_LANGUAGE = "zh-Hans" as const;
+
 export const SUPPORTED_LANGUAGES = [
   { code: "en", label: "English" },
   { code: "fr", label: "Français" },

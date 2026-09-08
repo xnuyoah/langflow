@@ -139,7 +139,7 @@ describe("CanvasControls", () => {
     render(<CanvasControls selectedNode={null} />);
 
     expect(screen.getByText("New")).toBeInTheDocument();
-    expect(screen.getByAltText("Langflow Assistant")).toBeInTheDocument();
+    expect(screen.getByAltText("DataFlow Assistant")).toBeInTheDocument();
   });
 
   it("should_hide_new_badge_when_assistant_already_discovered", () => {

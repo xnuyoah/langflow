@@ -7,27 +7,36 @@
 
 // Import the real i18n instance and loadLanguage (not the mock from jest.setup.js)
 jest.unmock("react-i18next");
+
 import i18n, { loadLanguage } from "./i18n";
 
 describe("loadLanguage", () => {
   beforeEach(() => {
     // Clear cached non-English bundles between tests
-    ["fr", "ja", "es", "de", "pt", "zh-Hans"].forEach((lang) => {
+    ["fr", "ja", "es", "de", "pt"].forEach((lang) => {
       if (i18n.hasResourceBundle(lang, "translation")) {
         i18n.removeResourceBundle(lang, "translation");
       }
     });
   });
 
-  it("does not call addResourceBundle for 'en' (already statically loaded)", async () => {
+  it("空值或不支持的偏好默认使用简体中文", async () => {
+    const { normalizeLanguage } = await import("./i18n");
+    expect(normalizeLanguage(null)).toBe("zh-Hans");
+    expect(normalizeLanguage("unsupported")).toBe("zh-Hans");
+  });
+
+  it("已静态加载的语言无需再次注册资源", async () => {
     const spy = jest.spyOn(i18n, "addResourceBundle");
     await loadLanguage("en");
+    await loadLanguage("zh-CN");
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
 
-  it("always has 'en' bundle available (statically bundled)", () => {
+  it("静态加载英文和默认中文词库", () => {
     expect(i18n.hasResourceBundle("en", "translation")).toBe(true);
+    expect(i18n.hasResourceBundle("zh-Hans", "translation")).toBe(true);
   });
 
   it("loads and registers a new language bundle", async () => {
@@ -49,5 +58,10 @@ describe("loadLanguage", () => {
     await loadLanguage("ja");
     expect(i18n.hasResourceBundle("fr", "translation")).toBe(true);
     expect(i18n.hasResourceBundle("ja", "translation")).toBe(true);
+  });
+
+  it("归一化常用简体中文语言别名", async () => {
+    await loadLanguage("zh-SG");
+    expect(i18n.hasResourceBundle("zh-Hans", "translation")).toBe(true);
   });
 });
