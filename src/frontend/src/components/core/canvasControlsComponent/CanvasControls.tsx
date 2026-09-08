@@ -193,7 +193,7 @@ const CanvasControls = ({
                     the button reads as "active" alongside the open panel. */}
                 <img
                   src={langflowAssistantIdleIcon}
-                  alt="Langflow Assistant"
+                  alt={t("assistant.title")}
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-150 ${
                     assistantSidebarOpen ? "opacity-0" : "group-hover:opacity-0"
                   }`}

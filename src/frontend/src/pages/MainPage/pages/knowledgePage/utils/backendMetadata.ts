@@ -1,4 +1,5 @@
 import type { KnowledgeBaseInfo } from "@/controllers/API/queries/knowledge-bases/use-get-knowledge-bases";
+import i18n from "@/i18n";
 
 /**
  * Display labels for the backends actually exposed in the UI.
@@ -40,7 +41,7 @@ export const getKnowledgeBaseBackendTarget = (
   }
 
   if (backendType === "chroma") {
-    return "Stored locally in Langflow";
+    return i18n.t("knowledgeBase.localStorageTarget");
   }
 
   if (backendType === "opensearch") {

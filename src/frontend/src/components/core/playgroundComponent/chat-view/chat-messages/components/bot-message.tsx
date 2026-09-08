@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import LangflowLogo from "@/assets/LangflowLogo.svg?react";
+import DataFlowLogo from "@/components/common/DataFlowLogo";
 import IconComponent, {
   ForwardedIconComponent,
 } from "@/components/common/genericIconComponent";
@@ -201,7 +201,7 @@ export const BotMessage = memo(
                   }
                 >
                   <div className="flex h-5 w-5 items-center justify-center">
-                    <LangflowLogo
+                    <DataFlowLogo
                       className="h-4 w-4 text-black"
                       aria-hidden="true"
                     />

@@ -4,7 +4,7 @@ import { axe } from "@/utils/a11y-test";
 import IOModal from "../playground-modal";
 
 // This suite only asserts the accessible-name fixes on IOModal's own icon
-// buttons (the sidebar toggle and the two "Built with Langflow" variants).
+// buttons (the sidebar toggle and the two "Built with DataFlow" variants).
 // Everything else on the page (chat panel, sidebar session list, output
 // panel) is mocked out so the suite doesn't have to model the full
 // store/query surface those subtrees depend on.
@@ -224,14 +224,15 @@ describe("IOModal (playground) accessibility", () => {
     ).toBeInTheDocument();
   });
 
-  it("hides the sidebar-open 'Built with Langflow' logo from assistive tech", () => {
+  it("hides the sidebar-open 'Built with DataFlow' logo from assistive tech", () => {
     renderPlayground();
 
-    // Sidebar-open variant: the button has a visible text label, but its
-    // decorative logo SVG must still be aria-hidden so AT doesn't announce
-    // an unnamed <svg> inside a named button.
-    const openVariantLogo = screen.getAllByTestId("langflow-logo-color")[0];
+    // 按钮已有可见标签，装饰性图标不应被辅助技术重复朗读。
+    const openVariantLogo = screen
+      .getByRole("button", { name: "Built with DataFlow" })
+      .querySelector("img");
     expect(openVariantLogo).toHaveAttribute("aria-hidden", "true");
+    expect(openVariantLogo).toHaveAttribute("alt", "");
   });
 
   it("flips the toggle's aria-label to 'Show sidebar' once collapsed", () => {
@@ -247,20 +248,19 @@ describe("IOModal (playground) accessibility", () => {
     ).toBeInTheDocument();
   });
 
-  it("names the collapsed-sidebar 'Built with Langflow' button and hides its icon", () => {
+  it("names the collapsed-sidebar 'Built with DataFlow' button and hides its icon", () => {
     renderPlayground();
 
     fireEvent.click(screen.getByRole("button", { name: "Hide sidebar" }));
 
     const collapsedButton = screen.getByRole("button", {
-      name: "Built with Langflow",
+      name: "Built with DataFlow",
     });
     expect(collapsedButton).toBeInTheDocument();
 
-    const icon = collapsedButton.querySelector(
-      '[data-testid="langflow-logo-color"]',
-    );
+    const icon = collapsedButton.querySelector("img");
     expect(icon).toHaveAttribute("aria-hidden", "true");
+    expect(icon).toHaveAttribute("alt", "");
   });
 
   it("has no detectable axe violations with the sidebar collapsed", async () => {
