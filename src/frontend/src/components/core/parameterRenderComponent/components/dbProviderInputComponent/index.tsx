@@ -377,7 +377,9 @@ function DBProviderOptionItem({
             )}
           </div>
           <span className="truncate text-[11px] text-muted-foreground">
-            {provider.description}
+            {t(`settings.dbProviders.providers.${provider.id}.description`, {
+              defaultValue: provider.description,
+            })}
           </span>
         </div>
         <ForwardedIconComponent
