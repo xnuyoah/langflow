@@ -29,7 +29,6 @@ import { TIMEOUTS } from "../../utils/constants/timeouts";
 const ROUTE_TITLES = [
   { path: "/flows", title: "Flows | Langflow" },
   { path: "/mcp", title: "MCP Server | Langflow" },
-  { path: "/assets/files", title: "Files | Langflow" },
   { path: "/assets/knowledge-bases", title: "Knowledge | Langflow" },
   { path: "/settings/general", title: "General | Langflow" },
   { path: "/settings/global-variables", title: "Global Variables | Langflow" },

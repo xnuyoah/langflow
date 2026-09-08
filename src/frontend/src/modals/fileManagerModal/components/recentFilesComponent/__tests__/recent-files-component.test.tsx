@@ -168,11 +168,7 @@ describe("RecentFilesComponent", () => {
     expect(screen.getByTestId("files-renderer")).toBeInTheDocument();
   });
 
-  it("links the empty-state 'My Files' shortcut to the /assets/files route", () => {
-    // Regression: the empty-state link pointed at the non-existent top-level
-    // "/files" route (a dead end). The files page is nested under "assets",
-    // so the link must target "/assets/files" — matching the sidebar's
-    // navigation in sideBarFolderButtons.
+  it("空状态提示上传文件，不再提供已删除页面的入口", () => {
     render(
       <MemoryRouter>
         <RecentFilesComponent
@@ -185,6 +181,6 @@ describe("RecentFilesComponent", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByRole("link")).toHaveAttribute("href", "/assets/files");
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 });
