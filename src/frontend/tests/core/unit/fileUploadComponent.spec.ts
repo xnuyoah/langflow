@@ -9,7 +9,6 @@ import { dismissLegacyWarnings } from "../../utils/dismiss-legacy-warnings";
 import { ensureFileSelected } from "../../utils/ensure-checkbox-checked";
 import { addComponentFromSidebar } from "../../utils/flow/add-component-from-sidebar";
 import { openBlankFlow } from "../../utils/flow/open-blank-flow";
-import { waitForMainPageReady } from "../../utils/flow/wait-for-main-page-ready";
 import { generateRandomFilename } from "../../utils/generate-filename";
 import {
   addParameterToNode,
@@ -708,79 +707,26 @@ test(
     const testFilePath = path.join(__dirname, "../../assets/test_file.txt");
     const txtFileContent = fs.readFileSync(testFilePath);
 
-    // Step 1: First navigate to files page and upload both files
-    await awaitBootstrapTest(page, { skipModal: true });
+    await openBlankFlow(page);
 
-    // Navigate to My Files page
-    await page.getByText(TEXTS.labelMyFiles).first().click();
-
-    // Check if we're on the files page. Asserting on the text rather than the
-    // selector alone: the page we are leaving has a mainpage_title too, and
-    // react-router v7 keeps it mounted long enough for a one-shot read to
-    // return "Starter Project".
-    await waitForMainPageReady(page, "Files");
-
-    // Upload the PSD file
-    const fileChooserPromisePsd = page.waitForEvent("filechooser", {
-      timeout: 30000,
-    });
-    await page.getByTestId("upload-file-btn").click();
-
-    const fileChooserPsd = await fileChooserPromisePsd;
-    await fileChooserPsd.setFiles([
+    // 通过上传 API 准备文件，供组件内的文件选择弹窗验证格式限制。
+    for (const file of [
       {
         name: `${psdFileName}.psd`,
         mimeType: "image/vnd.adobe.photoshop",
         buffer: psdFileContent,
       },
-    ]);
-
-    // Wait for upload success message
-    await expect(page.getByText("File uploaded successfully")).toBeVisible({
-      timeout: 10000,
-    });
-
-    // Verify PSD file appears in the list
-    await expect(page.getByText(`${psdFileName}.psd`)).toBeVisible({
-      timeout: 5000,
-    });
-
-    // Upload the TXT file
-    const fileChooserPromiseTxt = page.waitForEvent("filechooser", {
-      timeout: 30000,
-    });
-    await page.getByTestId("upload-file-btn").click();
-
-    const fileChooserTxt = await fileChooserPromiseTxt;
-    await fileChooserTxt.setFiles([
       {
         name: `${txtFileName}.txt`,
         mimeType: "text/plain",
         buffer: txtFileContent,
       },
-    ]);
-
-    // Wait for upload success message
-    await expect(page.getByText("File uploaded successfully")).toBeVisible({
-      timeout: 10000,
-    });
-
-    // Verify TXT file appears in the list
-    await expect(page.getByText(`${txtFileName}.txt`)).toBeVisible({
-      timeout: 5000,
-    });
-
-    // Step 2: Create a flow with File component and check if PSD file is disabled
-    // Navigate to workspace page
-    await page.getByText("Starter Project").first().click();
-
-    await awaitBootstrapTest(page, { skipGoto: true });
-
-    // Create a new flow
-    await page.waitForSelector('[data-testid="blank-flow"]', {
-      timeout: 30000,
-    });
-    await page.getByTestId("blank-flow").click();
+    ]) {
+      const response = await page.request.post("/api/v2/files", {
+        multipart: { file },
+      });
+      await expect(response).toBeOK();
+    }
 
     await addLegacyComponents(page);
 
@@ -799,7 +745,7 @@ test(
     await expect(fileManagement).toBeVisible();
     await fileManagement.click();
 
-    // Check if the PNG file has the disabled class (greyed out)
+    // 验证 PSD 文件显示为禁用状态。
     await expect(page.getByTestId(`file-item-${psdFileName}`)).toHaveClass(
       /pointer-events-none cursor-not-allowed opacity-50/,
     );

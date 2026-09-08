@@ -175,7 +175,7 @@ test(
 // on `.ag-cell-focus` with a 1px #94a3b8 border and a 5%-alpha shadow, which is
 // below the 3:1 non-text contrast floor and effectively invisible on a hovered
 // row. `.ag-no-border` / `.ag-knowledge-table` grids already carried a
-// `:focus-visible` ring (LE-1561, covered by tests/a11y/files.a11y.spec.ts);
+// `:focus-visible` ring (LE-1561);
 // the generic grid, `.ag-tool-mode`, `.no-border` and `.cell-disable-edit`
 // cells did not.
 //
