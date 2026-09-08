@@ -15,7 +15,8 @@ export const awaitBootstrapTest = async (
 ) => {
   const prepareMainPage = async (shouldGoto: boolean) => {
     if (shouldGoto) {
-      await page.goto("/");
+      // 显式进入列表，避免默认登录落点进入单个工作流。
+      await page.goto("/all");
     }
 
     await page.waitForSelector('[data-testid="mainpage_title"]', {

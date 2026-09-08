@@ -86,10 +86,6 @@ test.describe("data-rich route accessibility", () => {
     },
   );
 
-  // NOTE: the files page (/assets/files) has dedicated, full-state coverage in
-  // files.a11y.spec.ts (populated / empty / mobile / selected / actions menu /
-  // delete modal / rename editing + keyboard operability).
-
   test(
     "scans MCP servers page with configured servers",
     { tag: ["@release", "@workspace"] },

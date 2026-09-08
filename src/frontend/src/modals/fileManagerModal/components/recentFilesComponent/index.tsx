@@ -7,7 +7,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useDeleteFilesV2 } from "@/controllers/API/queries/file-management/use-delete-files";
 import { usePostRenameFileV2 } from "@/controllers/API/queries/file-management/use-put-rename-file";
-import { CustomLink } from "@/customization/components/custom-link";
 import DeleteConfirmationModal from "@/modals/deleteConfirmationModal";
 import { sortByBoolean, sortByDate } from "@/pages/MainPage/utils/sort-flows";
 import useAlertStore from "@/stores/alertStore";
@@ -422,15 +421,8 @@ export default function RecentFilesComponent({
           <div className="flex h-full w-full items-center justify-center text-sm">
             <span>
               {searchQuery !== ""
-                ? `${t("fileManager.noFilesFound")} `
-                : `${t("fileManager.uploadOrImport")}, `}
-              {t("fileManager.orVisit")}{" "}
-              <CustomLink
-                className="text-accent-pink-foreground underline"
-                to="/assets/files"
-              >
-                {t("files.myFiles")}.
-              </CustomLink>
+                ? t("fileManager.noFilesFound")
+                : t("fileManager.uploadOrImport")}
             </span>
           </div>
         )}

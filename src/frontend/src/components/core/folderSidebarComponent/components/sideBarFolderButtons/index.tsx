@@ -415,10 +415,6 @@ const SideBarFoldersButtonsComponent = ({
     });
   };
 
-  const handleFilesNavigation = () => {
-    _navigate("/assets/files");
-  };
-
   const handleKnowledgeNavigation = () => {
     _navigate("/assets/knowledge-bases");
   };
@@ -563,26 +559,16 @@ const SideBarFoldersButtonsComponent = ({
           </div>
         )}
       </SidebarContent>
-      {ENABLE_FILE_MANAGEMENT && (
+      {ENABLE_FILE_MANAGEMENT && ENABLE_KNOWLEDGE_BASES && (
         <SidebarFooter className="border-t">
           <div className="grid w-full items-center gap-2 p-2">
-            {ENABLE_KNOWLEDGE_BASES && (
-              <SidebarMenuButton
-                onClick={handleKnowledgeNavigation}
-                size="md"
-                className="text-sm"
-              >
-                <ForwardedIconComponent name="Library" className="h-4 w-4" />
-                {t("sidebar.knowledge")}
-              </SidebarMenuButton>
-            )}
             <SidebarMenuButton
-              onClick={handleFilesNavigation}
+              onClick={handleKnowledgeNavigation}
               size="md"
               className="text-sm"
             >
-              <ForwardedIconComponent name="File" className="h-4 w-4" />
-              {t("sidebar.myFiles")}
+              <ForwardedIconComponent name="Library" className="h-4 w-4" />
+              {t("sidebar.knowledge")}
             </SidebarMenuButton>
           </div>
         </SidebarFooter>

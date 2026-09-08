@@ -12,7 +12,7 @@ import { PlaygroundAuthGate } from "./components/authorization/playgroundAuthGat
 import ContextWrapper from "./contexts";
 import CustomDashboardWrapperPage from "./customization/components/custom-DashboardWrapperPage";
 import { CustomNavigate } from "./customization/components/custom-navigate";
-import { BASENAME } from "./customization/config-constants";
+import { BASENAME, DEFAULT_FLOW_PATH } from "./customization/config-constants";
 import {
   ENABLE_CUSTOM_PARAM,
   ENABLE_FILE_MANAGEMENT,
@@ -26,7 +26,6 @@ import { AppInitPage } from "./pages/AppInitPage";
 import { AppWrapperPage } from "./pages/AppWrapperPage";
 import FlowPage from "./pages/FlowPage";
 import LoginPage from "./pages/LoginPage";
-import FilesPage from "./pages/MainPage/pages/filesPage";
 import HomePage from "./pages/MainPage/pages/homePage";
 import KnowledgePage from "./pages/MainPage/pages/knowledgePage";
 import SourceChunksPage from "./pages/MainPage/pages/knowledgePage/sourceChunksPage/SourceChunksPage";
@@ -85,15 +84,16 @@ const router = createBrowserRouter(
                 <Route path="" element={<CollectionPage />}>
                   <Route
                     index
-                    element={<CustomNavigate replace to={"flows"} />}
+                    element={<CustomNavigate replace to={DEFAULT_FLOW_PATH} />}
                   />
                   {ENABLE_FILE_MANAGEMENT && (
                     <Route path="assets">
                       <Route
                         index
-                        element={<CustomNavigate replace to="files" />}
+                        element={
+                          <CustomNavigate replace to={DEFAULT_FLOW_PATH} />
+                        }
                       />
-                      <Route path="files" element={<FilesPage />} />
                       {ENABLE_KNOWLEDGE_BASES && (
                         <>
                           <Route

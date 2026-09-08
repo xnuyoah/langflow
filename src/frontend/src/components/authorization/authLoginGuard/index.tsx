@@ -1,4 +1,5 @@
 import { CustomNavigate } from "@/customization/components/custom-navigate";
+import { DEFAULT_FLOW_PATH } from "@/customization/config-constants";
 import { consumeRedirectUrl } from "@/hooks/use-sanitize-redirect-url";
 import useAuthStore from "@/stores/authStore";
 
@@ -13,7 +14,7 @@ export const ProtectedLoginRoute = ({ children }) => {
     if (redirectPath) {
       return <CustomNavigate to={redirectPath} replace />;
     }
-    return <CustomNavigate to="/home" replace />;
+    return <CustomNavigate to={DEFAULT_FLOW_PATH} replace />;
   }
 
   return children;
